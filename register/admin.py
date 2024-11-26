@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tables_core.models import CustomUser, Player
+from tables_core.models import CustomUser, Player, Match
 # Register your models here.
 
 @admin.register(CustomUser)

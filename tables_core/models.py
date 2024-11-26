@@ -44,3 +44,23 @@ class Player(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+# //________________________________________________\\
+
+class Match(models.Model):
+    
+    user = models.ForeignKey(Player, on_delete=models.CASCADE, 
+                        related_name='user_matches')
+    adv = models.ForeignKey(Player, on_delete=models.SET_NULL, 
+                        null=True, related_name='adv_matches')
+    
+    user_score = models.IntegerField(default=0)
+    adv_score = models.IntegerField(default=0)
+    result = models.IntegerField(default=0)
+    
+    date = models.DateTimeField(null=True)
+    start_match = models.DateTimeField(null=True)
+    end_match = models.DateTimeField(null=True)
+    
+    def __str__(self):
+        return f"Match {self.id} - {self.user} vs {self.adv}"

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from tables_core.models import CustomUser, Player
+from tables_core.models import CustomUser, Player, Match
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from Back import settings

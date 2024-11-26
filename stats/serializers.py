@@ -1,9 +1,16 @@
 from rest_framework import serializers
-from .models import User, Player
+from tables_core.models import CustomUser, Player, Match
+from player.serializers import PlayerSerializer
 
-class PlayerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True) 
+
+# \\ _______________________________________________//
+
+
+class MatchSerializer(serializers.ModelSerializer):
+    user = PlayerSerializer(read_only=True) 
+    adv = PlayerSerializer(read_only=True) 
 
     class Meta:
-        model = Player
-        fields = ['id', 'user', 'language', 'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
+        model = Match
+        fields = ['id', 'user',' user_score', 'adv', 'adv_score', 'result',
+                  'date', 'duration']

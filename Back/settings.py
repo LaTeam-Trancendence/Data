@@ -52,7 +52,7 @@ REST_FRAMEWORK = {
 # Application definition
 
 INSTALLED_APPS = [
-    'profil',
+    'player',
     'register',
     'stats',
     'tables_core',
