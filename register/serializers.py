@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from tables_core.models import CustomUser, Player
 from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
+from Back import settings
 
 # \\_______________register______________________________//
 
@@ -9,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'password', 'image']
         extra_kwargs = {'password': {'write_only': True}}
-
+        
     def create(self, validated_data):
         user = CustomUser.objects.create_user(username=validated_data['username'],
                                         password=validated_data['password'],

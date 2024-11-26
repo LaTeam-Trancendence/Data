@@ -1,15 +1,26 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 # from rest_framework.response import Response
 # from rest_framework import status
 
 from rest_framework.views import APIView
-from rest_framework.authtoken.models import Token 
+# from rest_framework.authtoken.models import Token 
+from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate, login
 from register.utils import CustomResponse
 from register.serializers import UserSerializer , LoginSerializer
+from Back import settings
 
 
 class RegisterUserView(APIView):
+    permission_classes = [AllowAny] 
+    
+    def get(self, request, *args, **kwargs):
+        return CustomResponse.success({
+            "status": "success",
+            "message": "Veuillez envoyer une requête POST pour vous inscrire.",
+        }, status_code=200)
+    
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -56,5 +67,4 @@ class LoginView(APIView):
             message="error",
             status_code=401
         ))
-            
-
+    
