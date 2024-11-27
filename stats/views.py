@@ -32,6 +32,40 @@ def up_player_stats(match):
 
 class FinalizeMatchView(APIView):
     
+    # \\_______recupere les stats____________//
+    
+    def get(self, request, *args, **kwargs):
+        
+        username = request.query_params.get("username", None)
+        # si recherche par id match_id = kwargs.get('match_id', None) 
+        # ajoute un if - matches = Match.objects.filter(id= match_id).filter() 
+        
+        if username:
+            try:
+                player = Player.objects.get(username=username)
+                matches = Match.objects.filter(user=player)
+                serializer = MatchSerializer(matches, many=True)
+                return CustomResponse.success(
+                    data={"matches": serializer.data},
+                    message=f"Matches pour le joueur {username}.",
+                    status_code=200
+                )
+            except Player.DoesNotExist:
+                return CustomResponse.error(
+                    {"error": f"Joueur avec username '{username}' introuvable."},
+                    status_code=404
+                )
+        else:
+            matches = Match.objects.all()
+            serializer = MatchSerializer(matches, many=True)
+            return CustomResponse.success(
+                data={"matches": serializer.data},
+                message="Statistiques de tous les matchs récupérées.",
+                status_code=200
+            )    
+            
+        # \\_______modifie les stats____________//
+            
     def post(self, request, *args, **kwargs):
         
         match_id = request.data.get("match_id")

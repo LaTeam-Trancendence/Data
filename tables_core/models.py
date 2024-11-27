@@ -28,8 +28,13 @@ class CustomUser(AbstractUser):
 # OneToOneField = un user pour un player
 
 class Player(models.Model):
+    
+    #username = 
+    #password = 
+    #picture =
 
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="player") 
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, 
+                related_name="player") 
     
     language = models.CharField(max_length=2, default="FR")
     

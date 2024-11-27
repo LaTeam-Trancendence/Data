@@ -6,5 +6,6 @@ from .views import FinalizeMatchView
 
 urlpatterns = [
     path('match/', FinalizeMatchView.as_view(), name='listmatch'),
-    path('match/<int:match_id>/', FinalizeMatchView.as_view(), name='statMatch')    
+    path('match/<int:match_id>/', FinalizeMatchView.as_view(),
+         name='statMatch')    
 ]

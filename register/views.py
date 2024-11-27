@@ -38,6 +38,7 @@ class RegisterUserView(APIView):
 # \\ ___________________login___________________________________//
 
 class LoginView(APIView):
+      
     def post(self, request, *args, **kwargs):
 
         serializer = LoginSerializer(data=request.data)
@@ -50,20 +51,61 @@ class LoginView(APIView):
             if user is not None:
                 login(request, user)
                 return(CustomResponse.succes(
-                data = {"CustomUser": UserSerializer(user).Meta},
-                message="succes",
-                status_code=200
+                    data = {"CustomUser": UserSerializer(user).Meta},
+                    message="succes",
+                    status_code=200
             ))
             else:
                 return(CustomResponse.error(
-            errors=serializer.errors,
-            message="error",
-            status_code=400
+                    errors=serializer.errors,
+                    message="error",
+                    status_code=400
         ))
         else:
             return(CustomResponse.error(
-            errors=serializer.errors,
-            message="error",
-            status_code=401
+                errors=serializer.errors,
+                message="error",
+                status_code=401
         ))
+
+def anoCustomUser(user):
     
+    user.username = f"user_{user.id}"
+    user.image = None 
+    user.save()
+    
+class DeleteAccountView(APIView):
+    
+    def post(self, request, *args, **kwargs):
+
+        user = request.user
+        
+        if user:
+            anoCustomUser(user)
+            return(CustomResponse.succes(
+                data = {"CustomUser": UserSerializer(user).Meta},
+                message="anonimisation reussie",
+                status_code=200
+            ))
+        else:
+            return(CustomResponse.error(
+                errors=anoCustomUser.errors,
+                message="error",
+                status_code=400
+        ))
+            
+            
+            
+            
+            
+            
+            
+# class DeleteAccountView(APIView):
+    
+#     def delete(self, request, *args, **kwargs):
+        
+#         user = request.user
+#         if user.is_authenticated:
+#             anonymize_and_delete_user(user)
+#             return Response({"message": "Votre compte a été supprimé et anonymisé."}, status=200)
+#         return Response({"error": "Utilisateur non authentifié."}, status=401)
