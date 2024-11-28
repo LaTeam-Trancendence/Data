@@ -24,7 +24,7 @@ class RegisterUserView(APIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            return(CustomResponse.succes(
+            return(CustomResponse.success(
                 data = {"CustomUser": UserSerializer(user).Meta},
                 message="succes",
                 status_code=201
