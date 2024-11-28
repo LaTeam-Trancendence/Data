@@ -11,8 +11,56 @@ from rest_framework import status
 # \\_________________________________________//
 
 
+class PlayerCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if not user.is_authenticated:
+            return Response(
+                {"Authentification requise pour créer un joueur."},
+                status=401)
+
+        data = request.data.copy()
+        data['user'] = user.id
+        serializer = PlayerSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+    
+    def get(self, request):
+        players = Player.objects.all()  # Récupère tous les joueurs
+        print(players)        
+        serializer = PlayerSerializer(players, many=True)
+        return Response(serializer.data)
+
+# class PlayerCreateView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         ser = request.data.get("user")
+#         if not CustomUser:
+#             return Response(
+#                 {"Un utilisateur doit être associé au joueur."},
+#                 status=400)
+#         serializer = PlayerSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=201)
+#         return Response(serializer.errors, status=400)
+#     def get(self, request):
+#         players = Player.objects.all()  # Récupère tous les joueurs
+#         print(players)        
+#         serializer = PlayerSerializer(players, many=True)
+#         return Response(serializer.data)
+
 class statsPlayerView(APIView):
     
+    def post(self, request, *args, **kwargs):
+        serializer = PlayerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+      
     # \\_______recupere les stats____________//
     
     def get(self, request, *args, **kwargs):
@@ -35,6 +83,7 @@ class statsPlayerView(APIView):
                     status_code=404)
                 
         else: 
+            #players = Player.objects.filter(status=True)
             players = Player.objects.all()
             serializer = PlayerSerializer(players, many=True)
             return CustomResponse.success(
@@ -42,7 +91,7 @@ class statsPlayerView(APIView):
                 message="Statistiques tous les joueurs ok",
                 status_code=200
             )
-        
+    
         # \\_______modifie les stats____________//
         
     def put(self, request, *args, **kwargs):

@@ -9,14 +9,16 @@ from Back import settings
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'password', 'image']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ['username', 'password', 'image']
+        # extra_kwargs = {'password': {'write_only': True}}
         
     def create(self, validated_data):
-        user = CustomUser.objects.create_user(username=validated_data['username'],
-                                        password=validated_data['password'],
-                                        image=validated_data.get('image', None),
+        user = CustomUser.objects.create_user(
+                                username=validated_data['username'],
+                                password=validated_data['password'],
+                                image=validated_data.get('image', None),
         )
+        # player = Player.objects.create_user()
 
         return user
     
