@@ -14,10 +14,10 @@ class AddFriendsView(APIView):
     
     def post(self, request):
         player = Player.objects.get(user=request.user)
-        friend_id = request.data.get("friend_id")
+        friend_username = request.data.get("friend_username")
         
         try:
-            friend = Player.objects.get(id=friend_id)
+            friend = Player.objects.get(user__username=friend_username)
             player.friends.add(friend)
             player.save()
             return CustomResponse.success({

@@ -10,8 +10,6 @@ class Player(models.Model):
                 related_name="player") 
 
     friends = models.models.ManyToManyField("self", symetrical=True, blank=True)
-    #voir si on est en ligne, par default non
-    is_online = models.BooleanField(default=False)
     
     def __str__(self):
         return self.user.username

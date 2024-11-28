@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'stats',
     'tables_core',
     'corsheaders',
+    'friends',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
