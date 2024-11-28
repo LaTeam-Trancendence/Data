@@ -36,6 +36,8 @@ class Player(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, 
                 related_name="player") 
     
+    friends = models.ManyToManyField("self", symmetrical=True, blank=True)
+    
     language = models.CharField(max_length=2, default="FR")
     
     #friends
