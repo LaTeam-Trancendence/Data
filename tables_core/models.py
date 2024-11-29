@@ -12,7 +12,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 # Reste a gerer les amis en intergrant une liste
 
 class CustomUser(AbstractUser):
-    image = models.ImageField(upload_to='images_pics/', blank=True, null=True)
+    image = models.ImageField(upload_to='player_picture/', blank=True, null=True)
     
     # groups = models.ManyToManyField(
     #     Group,
