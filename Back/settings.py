@@ -40,7 +40,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',  # Retourne JSON par défaut
+        'rest_framework.renderers.JSONRenderer', 
     ],
     # Optionnel : pour activer l'interface navigable uniquement en développement
     'DEFAULT_RENDERER_CLASSES_DEV': [
@@ -48,8 +48,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
-
-# Application definition
 
 INSTALLED_APPS = [
     'player',
@@ -146,7 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'back.path.to.SpecialCharacterPasswordValidator',
+        'NAME': 'register.validators.SpecialCharacterPasswordValidator',
     },
 ]
 

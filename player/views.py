@@ -31,7 +31,7 @@ class PlayerCreateView(APIView):
         return Response(serializer.errors, status=400)
     
     def get(self, request):
-        players = Player.objects.all()  # Récupère tous les joueurs
+        players = Player.objects.all()
         print(players)        
         serializer = PlayerSerializer(players, many=True)
         return Response(serializer.data)
