@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from PIL import Image, UnidentifiedImageError
+import os
 
 # //__________________________________________________\\
 # dans AbstractUser les champs username et password sont deja crees
@@ -48,7 +50,7 @@ class Player(models.Model):
     
     win_tictactoe = models.IntegerField(default=0)
     lose_tictactoe = models.IntegerField(default=0)
-    
+      
     def __str__(self):
         return self.user.username
     
