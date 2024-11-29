@@ -52,6 +52,20 @@ class Player(models.Model):
     def __str__(self):
         return self.user.username
     
+    """property ajoutes des propietes dynamiques aux models sans data, Calcul du total de parties jouées en temps reel."""  
+    @property
+    def total_games(self):
+        return self.win_pong + self.lose_pong + self.win_tictactoe + self.lose_tictactoe
+
+    """Calcul du pourcentage de victoires."""
+    @property
+    def win_rate(self):
+        total_games = self.total_games
+        if total_games == 0:
+            return 0
+        total_wins = self.win_pong + self.win_tictactoe
+        return round((total_wins / total_games) * 100, 2)
+    
 # //________________________________________________\\
 
 class Match(models.Model):

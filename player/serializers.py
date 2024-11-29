@@ -11,7 +11,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ['id', 'user', 'friends', 'image', 'language', 'win_pong', 'lose_pong',
+        fields = ['id', 'user', 'friends', 'language', 'win_pong', 'lose_pong',
                   'win_tictactoe', 'lose_tictactoe']
    
     def create(self, validated_data):

@@ -100,3 +100,19 @@ class FinalizeMatchView(APIView):
                 message="Statistiques tous les mqtchs ok",
                 status_code=200
             )
+
+class ShowStat(APIView):
+        
+
+    def get(self, request):
+        player = Player.objects.get(user=request.user)
+        stats = {
+            "username": player.user.username,
+            "win_pong": player.win_pong,
+            "lose_pong": player.lose_pong,
+            "win_tictactoe": player.win_tictactoe,
+            "lose_tictactoe": player.lose_tictactoe,
+            "total_games": player.total_games,
+            "win_rate": player.win_rate,
+        }
+        return Response(stats)
