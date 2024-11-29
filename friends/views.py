@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_frameword.response import Response
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Player
-from .serializers import PlayerSerializer, FriendSerializer
+from tables_core.models import Player
+from friends.serializers import FriendSerializer
 from register.utils import CustomResponse
 from django.contrib.auth.models import User
 

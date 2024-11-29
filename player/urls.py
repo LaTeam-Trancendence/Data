@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import statsPlayerView
-from .views import PlayerCreateView
+from .views import statsPlayerView, PlayerUpdateView
+
 
 # \\_______________________________________________//
 
@@ -8,5 +8,5 @@ urlpatterns = [
     path('players/', statsPlayerView.as_view(), name='listPlayer'),
     path('players/<int:player_id>/', statsPlayerView.as_view(), 
          name='statPlayers'),
-    path('playertest/', PlayerCreateView.as_view(), name='listtest'),
+    path('image/', PlayerUpdateView.as_view(), name='imagePlayer')
 ]

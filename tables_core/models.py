@@ -11,6 +11,9 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 
 # Reste a gerer les amis en intergrant une liste
 
+class CustomUser(AbstractUser):
+    image = models.ImageField(upload_to='player_picture/', blank=True, null=True)
+    
     # groups = models.ManyToManyField(
     #     Group,
     #     related_name="custom_user_groups",  
@@ -20,22 +23,24 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
     #     related_name="custom_user_permissions", 
     #     blank=True,
     # )
-    
-class CustomUser(AbstractUser):
-    image = models.ImageField(upload_to='images_pics/', blank=True, null=True)
-    
 # //________________________________________________\\
 
 # OneToOneField = un user pour un player
 
 class Player(models.Model):
-        
+    
+    #username = 
+    #password = 
+    #picture =
+
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, 
                 related_name="player") 
     
+    friends = models.ManyToManyField("self", symmetrical=True, blank=True)
+    
     language = models.CharField(max_length=2, default="FR")
     
-    # friends = models.models.ManyToManyField("self", symetrical=True, blank=True)
+    #friends
     status = models.BooleanField(default=False)
     
     win_pong = models.IntegerField(default=0)
@@ -63,12 +68,6 @@ class Match(models.Model):
     date = models.DateTimeField(null=True)
     start_match = models.DateTimeField(null=True)
     end_match = models.DateTimeField(null=True)
-    duration = models.DurationField(null=True)
-    
-    def save(self, *args, **kwargs):
-        if self.start_match and self.end_match:
-            self.duration = self.end_match - self.start_match 
-        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"Match {self.id} - {self.user} vs {self.adv}"
