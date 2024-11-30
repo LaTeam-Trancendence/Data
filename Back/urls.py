@@ -28,7 +28,7 @@ urlpatterns = [
     path('api/', include('friends.urls')),
     path('api/', include('stats.urls')),
     path('api/', include('player.urls')),
-    path('prometheus-xyzabc/', include('django_prometheus.urls'))
+    # path('prometheus-xyzabc/', include('django_prometheus.urls'))
 ]
 
 if settings.DEBUG:
