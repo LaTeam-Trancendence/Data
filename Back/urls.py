@@ -27,7 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('friends.urls')),
     path('api/', include('stats.urls')),
-    path('api/', include('player.urls'))
+    path('api/', include('player.urls')),
+    path('prometheus-xyzabc/', include('django_prometheus.urls'))
 ]
 
 #sa gere les urls pattern MEDIA et gere les requetes

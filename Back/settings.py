@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +25,10 @@ SECRET_KEY = 'django-insecure-bbqjzahyzlim1vvp%6k%g0)gn%5nb0j8w$&if@s4@-%hy93*-s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	"docker-files-api-1",
+	"localhost",
+]
 
 PASSWORD_MIN_LENGTH = 8
 PASSWORD_MAX_LENGTH = 25
@@ -40,7 +44,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer', 
+        'rest_framework.renderers.JSONRenderer',  # Retourne JSON par défaut
     ],
     # Optionnel : pour activer l'interface navigable uniquement en développement
     'DEFAULT_RENDERER_CLASSES_DEV': [
@@ -49,35 +53,38 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Application definition
+
 INSTALLED_APPS = [
-    'player',
-    'register',
-    'stats',
-    'tables_core',
-    'corsheaders',
-    'friends',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'corsheaders',
+    'player',
+    'register',
+    'stats',
+    'tables_core',
+	'frinds',
+	'django_prometheus',
 ]
 
 MIDDLEWARE = [
+	'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+	'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
-import os
-
-#url pour acceder aux media
+#repertoire des fichiers media
 MEDIA_URL = '/media/'
 #chemin absolue pour stocke les fichiers telecharge
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -119,10 +126,10 @@ AUTH_USER_MODEL = 'tables_core.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'transcendbase',
-        'USER': 'myuser',
-        'PASSWORD': 'nomdp',
-        'HOST': 'localhost',
+        'NAME': os.environ.get("POSTGRES_DB"),
+        'USER': os.environ.get("POSTGRES_USER"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        'HOST': 'postgres',  # Le nom du service dans Docker
         'PORT': '5432',
     }
 }
@@ -145,7 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'register.validators.SpecialCharacterPasswordValidator',
+        'NAME': 'back.path.to.SpecialCharacterPasswordValidator',
     },
 ]
 
