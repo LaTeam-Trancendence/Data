@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-bbqjzahyzlim1vvp%6k%g0)gn%5nb0j8w$&if@s4@-%hy93*-s
 DEBUG = True
 
 ALLOWED_HOSTS = [
-	"docker-files-api-1",
-	"localhost",
+	# "docker-files-api-1",
+	# "localhost",
 ]
 
 PASSWORD_MIN_LENGTH = 8
@@ -67,12 +67,12 @@ INSTALLED_APPS = [
     'register',
     'stats',
     'tables_core',
-	'frinds',
-	'django_prometheus',
+	'friends',
+	# 'django_prometheus',
 ]
 
 MIDDLEWARE = [
-	'django_prometheus.middleware.PrometheusBeforeMiddleware',
+	# 'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -81,7 +81,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'django_prometheus.middleware.PrometheusAfterMiddleware',
+	# 'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 #repertoire des fichiers media
@@ -126,10 +126,10 @@ AUTH_USER_MODEL = 'tables_core.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get("POSTGRES_DB"),
-        'USER': os.environ.get("POSTGRES_USER"),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
-        'HOST': 'postgres',  # Le nom du service dans Docker
+        'NAME': os.environ.get("POSTGRES_DB", 'transcendbase'),
+        'USER': os.environ.get("POSTGRES_USER", 'myuser'),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'nomdp'),
+        'HOST': 'localhost', #'postgres',   Le nom du service dans Docker
         'PORT': '5432',
     }
 }
@@ -152,7 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'back.path.to.SpecialCharacterPasswordValidator',
+        'NAME': 'register.validators.SpecialCharacterPasswordValidator',
     },
 ]
 
