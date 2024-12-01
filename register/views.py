@@ -52,7 +52,7 @@ class LoginView(APIView):
             if user is not None:
                 login(request, user)
                 return(CustomResponse.succes(
-                    {"CustomUser": "create"},
+                    {"CustomUser": "success"},
                     status_code=200
             ))
             else:
@@ -81,14 +81,12 @@ class DeleteAccountView(APIView):
         if user:
             anoCustomUser(user)
             return(CustomResponse.succes(
-                data = {"CustomUser": UserSerializer(user).Meta},
-                message="anonimisation reussie",
+                {"delete":"anonimisation reussie"},
                 status_code=200
             ))
         else:
             return(CustomResponse.error(
-                errors=anoCustomUser.errors,
-                message="error",
+                {"errors": anoCustomUser.errors},
                 status_code=400
         ))
             
