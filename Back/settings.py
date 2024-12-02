@@ -94,12 +94,27 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://localhost:5173",
+    "http://localhost:8080"
 ]
 
 CORS_ALLOW_HEADERS = [
     'content-type',  # Autoriser les en-têtes personnalisés
     'authorization',
+    'x-csrftoken',
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:5173",  # Ajouter votre frontend ici
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",  # Ajoutez l'origine de votre frontend
+]
+
+CSRF_COOKIE_NAME = 'csrftoken'
+CORS_ALLOW_CREDENTIALS = True  # Autoriser les cookies pour les requêtes CORS
+
 
 ROOT_URLCONF = 'Back.urls'
 

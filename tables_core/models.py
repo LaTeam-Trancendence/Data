@@ -16,6 +16,16 @@ import os
 class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='media/player_picture/', blank=True, null=True)
     
+    def save(self, *args, **kwargs):
+        # Redimensionner l'image avant de la sauvegarder
+        super().save(*args, **kwargs)  # Sauvegarde initiale pour accéder au fichier
+        if self.image:
+            img = Image.open(self.image.path)  # Chemin local du fichier
+            if img.height > 400 or img.width > 400:
+                output_size = (400, 400)
+                img = img.resize(output_size, Image.Resampling.LANCZOS) #constante pour une qualite d image redimentionner elevee
+                img.save(self.image.path)
+                
     # groups = models.ManyToManyField(
     #     Group,
     #     related_name="custom_user_groups",  
