@@ -118,6 +118,10 @@ TEMPLATES = [
     },
 ]
 
+SESSION_COOKIE_HTTPONLY = True  # Empêche JavaScript d'accéder au cookie
+
+SESSION_COOKIE_SECURE = True   # Active uniquement en HTTPS
+
 WSGI_APPLICATION = 'Back.wsgi.application'
 
 AUTH_USER_MODEL = 'tables_core.CustomUser'

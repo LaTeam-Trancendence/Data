@@ -36,23 +36,6 @@ class PlayerCreateView(APIView):
         serializer = PlayerSerializer(players, many=True)
         return Response(serializer.data)
 
-# class PlayerCreateView(APIView):
-#     def post(self, request, *args, **kwargs):
-#         ser = request.data.get("user")
-#         if not CustomUser:
-#             return Response(
-#                 {"Un utilisateur doit être associé au joueur."},
-#                 status=400)
-#         serializer = PlayerSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=201)
-#         return Response(serializer.errors, status=400)
-#     def get(self, request):
-#         players = Player.objects.all()  # Récupère tous les joueurs
-#         print(players)        
-#         serializer = PlayerSerializer(players, many=True)
-#         return Response(serializer.data)
 
 class statsPlayerView(APIView):
     
@@ -94,7 +77,7 @@ class statsPlayerView(APIView):
                 status_code=200
             )
     
-        # \\_______modifie les stats____________//
+    # \\_______________modifie les stats____________//
         
     def put(self, request, *args, **kwargs):
         

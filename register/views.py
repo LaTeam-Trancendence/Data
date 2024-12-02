@@ -39,6 +39,7 @@ class RegisterUserView(APIView):
 # \\ ___________________login___________________________________//
 
 class LoginView(APIView):
+    permission_classes = [AllowAny]
       
     def post(self, request, *args, **kwargs):
 
@@ -51,8 +52,8 @@ class LoginView(APIView):
 
             if user is not None:
                 login(request, user)
-                return(CustomResponse.succes(
-                    {"CustomUser": "success"},
+                return(CustomResponse.success(
+                    {"CustomUser": "success login"},
                     status_code=200
             ))
             else:
