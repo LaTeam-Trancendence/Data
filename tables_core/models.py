@@ -14,7 +14,7 @@ import os
 # Reste a gerer les amis en intergrant une liste
 
 class CustomUser(AbstractUser):
-    image = models.ImageField(upload_to='player_picture/', blank=True, null=True)
+    image = models.ImageField(upload_to='media/player_picture/', blank=True, null=True)
     
     # groups = models.ManyToManyField(
     #     Group,
@@ -69,6 +69,17 @@ class Match(models.Model):
     date = models.DateTimeField(null=True)
     start_match = models.DateTimeField(null=True)
     end_match = models.DateTimeField(null=True)
+    duration = models.DurationField(null=True)
+    
+    # def __str__(self):
+    #     return f"Match {self.id} - {self.user} vs {self.adv}"
+    
+    
+    
+    def save(self, *args, **kwargs):
+        if self.start_match and self.end_match:
+            self.duration = self.end_match - self.start_match 
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"Match {self.id} - {self.user} vs {self.adv}"

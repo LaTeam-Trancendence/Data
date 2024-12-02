@@ -18,3 +18,12 @@ class Player_admin(admin.ModelAdmin):
         return "Pas d'image"
 
     get_image.short_description = "Image"
+
+@admin.register(Match)
+class Match_admin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'adv', 'user_score', 'adv_score', 
+                    'result', 'date', 'start_match', 'end_match']
+    
+    exclude = ['duration']
+    
+    pass

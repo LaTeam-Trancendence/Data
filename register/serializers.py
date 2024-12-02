@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(
                                 username=validated_data['username'],
                                 password=validated_data['password'],
-                                # image=validated_data.get('image', None),
+                                image=validated_data.get('image', None),
         )
         # player = Player.objects.create_user()
         return user
@@ -48,7 +48,7 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(username=username, password=password)
 
         if user is None:
-            raise serializers.ValidationError("Invalid credentials. Please try again.")
+            raise serializers.ValidationError("Identifiants non valides")
         data["user"] = user
         return data
 
