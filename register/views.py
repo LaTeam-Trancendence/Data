@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from register.utils import CustomResponse
 from register.serializers import UserSerializer , LoginSerializer
 from Back import settings
@@ -38,6 +38,7 @@ class RegisterUserView(APIView):
 
 # \\ ___________________login___________________________________//
 
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
       
@@ -66,7 +67,25 @@ class LoginView(APIView):
                 {"errors": serializer.errors},
                 status_code=401
         ))
+            
+            
+ # \\___________________logout________________________//
+ 
+ 
+class LogoutView(APIView):
+    
+    def post(self, request):
 
+        logout(request)
+        return (CustomResponse.success(
+            {"message": "Déconnexion réussie."},
+            status=200
+        ))
+
+        
+ # \\_________________Anonim________________________//
+ 
+ 
 def anoCustomUser(user):
     
     user.username = f"user_{user.id}"
@@ -93,7 +112,13 @@ class DeleteAccountView(APIView):
             
             
             
-            
+class HealthCheckView(APIView):
+    
+    def get(self, request):
+        return (CustomResponse.success(
+            {"status": "ok"},
+            status_code=200
+        ))
             
             
             
