@@ -176,6 +176,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+PROMETHEUS_LATENCY_BUCKETS = [0.001, 0.0015, 0.002, 0.0025, 0.005, 0.0075, 0.01, 0.015, 0.02, 0.025, 0.05, 0.1]
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
