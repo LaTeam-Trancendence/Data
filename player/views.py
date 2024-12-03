@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
+from .serializers import PlayerImageUploadSerializer
 
 # \\_________________________________________//
 
@@ -113,14 +114,16 @@ class statsPlayerView(APIView):
             status_code=400
         )
 
-class PlayerUpdateView(APIView):
+class UploadPlayerImageView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)  # Pour accepter les fichiers
 
     def post(self, request):
-        player = Player.objects.get(user=request.user)
-        serializer = PlayerSerializer(player, data=request.data, partial=True)
+        user = request.user  # Récupère l'utilisateur connecté
+        serializer = PlayerImageUploadSerializer(user, data=request.data, partial=True)
+
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=200)
+            return Response({"message": "Image mise à jour avec succès", "image_url": user.image.url}, status=200)
+
         return Response(serializer.errors, status=400)

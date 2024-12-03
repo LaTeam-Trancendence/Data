@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from PIL import Image, UnidentifiedImageError
+import os
 
 # //__________________________________________________\\
 # dans AbstractUser les champs username et password sont deja crees
@@ -14,6 +16,16 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='media/player_picture/', blank=True, null=True)
     
+    def save(self, *args, **kwargs):
+        # Redimensionner l'image avant de la sauvegarder
+        super().save(*args, **kwargs)  # Sauvegarde initiale pour accéder au fichier
+        if self.image:
+            img = Image.open(self.image.path)  # Chemin local du fichier
+            if img.height > 400 or img.width > 400:
+                output_size = (400, 400)
+                img = img.resize(output_size, Image.Resampling.LANCZOS) #constante pour une qualite d image redimentionner elevee
+                img.save(self.image.path)
+                
     # groups = models.ManyToManyField(
     #     Group,
     #     related_name="custom_user_groups",  
@@ -39,8 +51,7 @@ class Player(models.Model):
     friends = models.ManyToManyField("self", symmetrical=True, blank=True)
     
     language = models.CharField(max_length=2, default="FR")
-    
-    #friends
+
     status = models.BooleanField(default=False)
     
     win_pong = models.IntegerField(default=0)
@@ -48,23 +59,9 @@ class Player(models.Model):
     
     win_tictactoe = models.IntegerField(default=0)
     lose_tictactoe = models.IntegerField(default=0)
-    
+      
     def __str__(self):
         return self.user.username
-    
-    """property ajoutes des propietes dynamiques aux models sans data, Calcul du total de parties jouées en temps reel."""  
-    @property
-    def total_games(self):
-        return self.win_pong + self.lose_pong + self.win_tictactoe + self.lose_tictactoe
-
-    """Calcul du pourcentage de victoires."""
-    @property
-    def win_rate(self):
-        total_games = self.total_games
-        if total_games == 0:
-            return 0
-        total_wins = self.win_pong + self.win_tictactoe
-        return round((total_wins / total_games) * 100, 2)
     
 # //________________________________________________\\
 
