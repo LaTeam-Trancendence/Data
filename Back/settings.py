@@ -96,9 +96,19 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_HEADERS = [
-    'content-type',  # Autoriser les en-têtes personnalisés
+    'content-type',
+    'x-csrftoken',
     'authorization',
+    'accept',
+    'origin',
+    'user-agent',
+    'x-requested-with',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+]
+
 
 ROOT_URLCONF = 'Back.urls'
 
