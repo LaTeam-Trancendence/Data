@@ -51,4 +51,13 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Identifiants non valides")
         data["user"] = user
         return data
+    
+
+class DeleteSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
+
+    def validate_id(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("L'ID doit être positif.")
+        return value
 

@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from register.utils import CustomResponse
-from register.serializers import UserSerializer , LoginSerializer
+from register.serializers import UserSerializer , LoginSerializer, DeleteSerializer
 from Back import settings
 import logging
 
@@ -73,43 +73,49 @@ class LoginView(APIView):
  
  
 class LogoutView(APIView):
-    
+    permission_classes = [IsAuthenticated]
+
+
     def post(self, request):
 
-        logout(request)
-        return (CustomResponse.success(
-            {"message": "Déconnexion réussie."},
-            status=200
-        ))
-
+        if request.user.is_authenticated:
+            logout(request)
+            return CustomResponse.success(
+                {"message": "Déconnexion réussie."},
+                status_code=200
+            )
+        else:
+            return CustomResponse.error(
+                {"error": "Aucune session active."},
+                status_code=400
+            )
         
- # \\_________________Anonim________________________//
+ # \\_________________Anonim/delete________________________//
  
  
+class DeleteAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        user = request.user
+        
+        if user:
+            anoCustomUser(user),         
+            return CustomResponse.success(
+            {"message": "Objet supprimé avec succès."},
+            status_code=200)
+        return(CustomResponse.error(
+                {"errors": anoCustomUser.errors},
+                status_code=400
+        ))
+        
 def anoCustomUser(user):
     
     user.username = f"user_{user.id}"
     user.image = None 
+    user.is_anonymized = True
     user.save()
     
-class DeleteAccountView(APIView):
-    
-    def post(self, request, *args, **kwargs):
-
-        user = request.user
-        
-        if user:
-            anoCustomUser(user)
-            return(CustomResponse.succes(
-                {"delete":"anonimisation reussie"},
-                status_code=200
-            ))
-        else:
-            return(CustomResponse.error(
-                {"errors": anoCustomUser.errors},
-                status_code=400
-        ))
-            
  # \\___________Healthcheck pour docker________________//       
      
             
