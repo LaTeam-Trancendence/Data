@@ -110,7 +110,8 @@ class DeleteAccountView(APIView):
                 status_code=400
         ))
             
-            
+ # \\___________Healthcheck pour docker________________//       
+     
             
 class HealthCheckView(APIView):
     
