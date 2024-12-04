@@ -17,6 +17,13 @@ class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='media/player_picture/', blank=True, null=True)
     
     def save(self, *args, **kwargs):
+        # Supprimer l'ancienne image si elle existe et si elle diffère de la nouvelle
+        if self.pk:
+            old_image = CustomUser.objects.get(pk=self.pk).image
+            if old_image and old_image != self.image:
+                if os.path.isfile(old_image.path):
+                    os.remove(old_image.path)
+    
         # Redimensionner l'image avant de la sauvegarder
         super().save(*args, **kwargs)  # Sauvegarde initiale pour accéder au fichier
         if self.image:

@@ -8,8 +8,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import PlayerImageUploadSerializer
+from PIL import Image
 
 # \\_________________________________________//
 
@@ -114,10 +115,50 @@ class statsPlayerView(APIView):
             status_code=400
         )
 
+class   signupAPIView(APIView):
+    serializer_class = PlayerSerializer
+    permission_classes = [AllowAny]
+
+class   changeImageAPIView(APIView):
+    permission_classes =[IsAuthenticated,]
+    parser_classes = [FormParser, MultiPartParser,]
+    
+    def post(self, request, format=None):
+        user = request.user
+        serializer = PlayerImageUploadSerializer(instance=user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=200)
+        else:
+            return Response(data=serializer.errors, status=500)
+''''
 class UploadPlayerImageView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)  # Pour accepter les fichiers
 
+    def post(self, request):
+        user = request.user  # Récupère l'utilisateur connecté
+
+        image = request.FILES.get('image')
+        if not image:
+            return Response({"error": "Aucune image n'a été envoyée."}, status=400)
+
+        # Valider la taille de l'image
+        try:
+            img = Image.open(image)
+            if img.height > 400 or img.width > 400:
+                return Response({"error": "Les dimensions de l'image doivent être de 400x400 pixels maximum."}, status=400)
+        except Exception as e:
+            return Response({"error": f"Erreur lors de la validation de l'image : {e}"}, status=400)
+
+        # Sauvegarder l'image
+        user.image = image
+        user.save()
+
+        return Response({"message": "Image mise à jour avec succès", "image_url": user.image.url}, status=200)
+'''
+
+''''
     def post(self, request):
         user = request.user  # Récupère l'utilisateur connecté
         serializer = PlayerImageUploadSerializer(user, data=request.data, partial=True)
@@ -127,3 +168,4 @@ class UploadPlayerImageView(APIView):
             return Response({"message": "Image mise à jour avec succès", "image_url": user.image.url}, status=200)
 
         return Response(serializer.errors, status=400)
+'''

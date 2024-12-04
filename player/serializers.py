@@ -28,8 +28,14 @@ class PlayerSerializer(serializers.ModelSerializer):
 class PlayerImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["image"]
+        fields = ["image"] #inclu uniquement le champ image
         
+    
+    def update(self, instance, validated_data):
+        instance.image = validated_data.get("image", instance.image)
+        instance.save()
+        return instance
+    ''''    
     def validate_profile_picture(self, value):
         
         if value.content_type not in ['image/jpeg', 'image/png']:
@@ -48,4 +54,4 @@ class PlayerImageUploadSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Fichier invalide. Téléchargez une image valide.")
 
         return value
-    
+    '''
