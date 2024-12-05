@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from tables_core.models import CustomUser, Player, Match
 from django.contrib.auth.models import User
 from register.utils import CustomResponse
-from stats.serializers import PlayerSerializer
+from player.serializers import PlayerSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,31 +12,6 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import PlayerImageUploadSerializer
 
 # \\_________________________________________//
-
-
-class PlayerCreateView(APIView):
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        if not user.is_authenticated:
-            return Response(
-                {"Authentification requise pour créer un joueur."},
-                status=401)
-
-        data = request.data.copy()
-        data['user'] = user.id
-        serializer = PlayerSerializer(data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-    
-    def get(self, request):
-        players = Player.objects.all()
-        print(players)        
-        serializer = PlayerSerializer(players, many=True)
-        return Response(serializer.data)
-
 
 class statsPlayerView(APIView):
     
@@ -127,3 +102,39 @@ class UploadPlayerImageView(APIView):
             return Response({"message": "Image mise à jour avec succès", "image_url": user.image.url}, status=200)
 
         return Response(serializer.errors, status=400)
+
+# class PlayerCreateView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         user = request.user
+#         if not user.is_authenticated:
+#             return Response(
+#                 {"Authentification requise pour créer un joueur."},
+#                 status=401)
+
+#         data = request.data.copy()
+#         data['user'] = user.id
+#         serializer = PlayerSerializer(data=data)
+
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=201)
+#         return Response(serializer.errors, status=400)
+    
+#     def get(self, request):
+#         players = Player.objects.all()
+#         print(players)        
+#         serializer = PlayerSerializer(players, many=True)
+#         return Response(serializer.data)
+
+# class DisplayPlayerView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request):
+#             player = Player.objects.get(user=request.user)
+#             serializer = DisplayPlayerSerializer(player)
+#             return(CustomResponse.success(
+#                 serializer.data,
+#                 status_code=200
+#             ))
+#         # return Response({"error": "Joueur introuvable."}, status=404)
+

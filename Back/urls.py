@@ -22,12 +22,13 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('api/', include('register.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
+    path('api/', include('register.urls')),
+    path('api/', include('player.urls')),
+    path('api/', include('profil.urls')),
     path('api/', include('friends.urls')),
     path('api/', include('stats.urls')),
-    path('api/', include('player.urls')),
     # path('prometheus-xyzabc/', include('django_prometheus.urls'))
 ]
 

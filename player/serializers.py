@@ -49,3 +49,16 @@ class PlayerImageUploadSerializer(serializers.ModelSerializer):
 
         return value
     
+# class DisplayPlayerSerializer(serializers.ModelSerializer):
+#     player = serializers.SerializerMethodField()
+
+#     class Meta:
+#         model = CustomUser
+#         fields = ['id', 'username', 'email', 'player']
+
+#     def get_player(self, obj):
+#         try:
+#             player = Player.objects.get(user=obj)
+#             return PlayerSerializer(player).data
+#         except Player.DoesNotExist:
+#             return None

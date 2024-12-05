@@ -1,0 +1,9 @@
+Liste erreur
+register:
+
+username = 'ce pseudo existe déjà'
+password = 'mdp: minimum 8 caractères avec au moins "!@#$%^&*()" et ne doit pas être trop commun(ex: 123...)'
+
+login:
+
+

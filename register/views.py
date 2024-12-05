@@ -59,12 +59,12 @@ class LoginView(APIView):
             ))
             else:
                 return(CustomResponse.error(
-                {"errors": serializer.errors},
+                {"errors": "champ vide"},
                 status_code=400
         ))
         else:
             return(CustomResponse.error(
-                {"errors": serializer.errors},
+                {"errors": "le pseudo ou le mdp n'est pas valide"},
                 status_code=401
         ))
             

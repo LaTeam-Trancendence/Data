@@ -8,5 +8,6 @@ urlpatterns = [
     path('players/', statsPlayerView.as_view(), name='listPlayer'),
     path('players/<int:player_id>/', statsPlayerView.as_view(), 
          name='statPlayers'),
-    path('image/', UploadPlayerImageView.as_view(), name='imagePlayer')
+    path('image/', UploadPlayerImageView.as_view(), name='imagePlayer'),
+    # path('profil/', DisplayPlayerView.as_view(), name='profil')
 ]
