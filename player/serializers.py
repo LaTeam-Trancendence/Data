@@ -8,19 +8,19 @@ from PIL import Image
 
 
 class PlayerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True) 
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Player
         fields = ['id', 'user', 'friends', 'language', 'win_pong', 'lose_pong',
                   'win_tictactoe', 'lose_tictactoe']
-   
+
     def create(self, validated_data):
 
         if 'user' not in validated_data:
             raise serializers.ValidationError({"user": "Un utilisateur doit être spécifié."})
         return super().create(validated_data)
-    
+
     #protection contre les injection sql
     # Vérifie le type MIME permet d'identifier la nature et le format de docs
     # Vérifie la taille du fichier (max 5MB)
@@ -28,16 +28,22 @@ class PlayerSerializer(serializers.ModelSerializer):
 class PlayerImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["image"]
-        
+        fields = ["image"] #inclu uniquement le champ image
+
+
+    def update(self, instance, validated_data):
+        instance.image = validated_data.get("image", instance.image)
+        instance.save()
+        return instance
+    ''''
     def validate_profile_picture(self, value):
-        
+
         if value.content_type not in ['image/jpeg', 'image/png']:
             raise serializers.ValidationError("Seuls les fichiers JPEG et PNG sont autorisés.")
-        
+
         if value.size > 5 * 1024 * 1024:
             raise serializers.ValidationError("La taille maximale est de 5MB.")
-    
+
         try:
             img = Image.open(value)
             img.verify()  # Vérifie si c'est une image valide
@@ -48,7 +54,7 @@ class PlayerImageUploadSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Fichier invalide. Téléchargez une image valide.")
 
         return value
-    
+
 # class DisplayPlayerSerializer(serializers.ModelSerializer):
 #     player = serializers.SerializerMethodField()
 
@@ -62,3 +68,4 @@ class PlayerImageUploadSerializer(serializers.ModelSerializer):
 #             return PlayerSerializer(player).data
 #         except Player.DoesNotExist:
 #             return None
+'''
