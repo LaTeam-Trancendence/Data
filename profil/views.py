@@ -5,12 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from register.utils import CustomResponse
-from .serializers import ListPlayerSerializer, CustomPlayerSerializer
+from .serializers import ListPlayerSerializer, CustomPlayerSerializer, FriendSerializer
 from Back import settings
 import logging
 
 
-            
+# \\______________profil____________//
+
 class DisplayPlayerView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -21,7 +22,51 @@ class DisplayPlayerView(APIView):
                 serializer.data,
                 status_code=200
             ))
-            
+        
+# \\___________gestion friends______________//
+        
+class AddFriendsView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        player = Player.objects.get(user=request.user)
+        friend_username = request.data.get("friend_username")
+        
+        try:
+            friend = Player.objects.get(user__username=friend_username)
+            if friend in player.friends.all():
+                return (CustomResponse.error(
+                    {"message": "Ce joueur est déjà dans votre liste d'amis."},
+                    status_code=400
+                    ))
+            player.friends.add(friend)
+            player.save()
+            return (CustomResponse.success(
+                {"message": "ami ajouté avec succes."},
+                status_code=200
+                ))
+
+        except Player.DoesNotExist:
+            return CustomResponse.error({
+                "error": "joueur non trouvé"}, status_code=404)
+
+
+# class   FriendListView(APIView):
+    
+#     permission_classes = [IsAuthenticated]
+    
+#     def get(self, request):
+#         player = Player.objects.get(user=request.user)
+#         friends = player.friends.all()
+#         serializer = FriendSerializer(friends, many=True)
+#         return CustomResponse.success({
+#                 "Friends list": "succes.",
+#             }, status=200)
+
+
+
+# \\______________listPlayer____________//
+        
 class ListPlayerView(APIView):
     permission_classes = [IsAuthenticated]
     

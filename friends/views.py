@@ -8,8 +8,6 @@ from register.utils import CustomResponse
 from django.contrib.auth.models import User
 
 class AddFriendsView(APIView):
-    
-    #acces au joueur authentifier
     permission_classes = [IsAuthenticated]
     
     def post(self, request):

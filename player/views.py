@@ -93,6 +93,8 @@ class statsPlayerView(APIView):
 class   signupAPIView(APIView):
     serializer_class = PlayerSerializer
     permission_classes = [AllowAny]
+    
+# \\________________verfier les reponses___________//
 
 class   changeImageAPIView(APIView):
     permission_classes =[IsAuthenticated,]
