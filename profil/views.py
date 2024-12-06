@@ -5,21 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from register.utils import CustomResponse
-from .serializers import DisplayPlayerSerializer, CustomPlayerSerializer
+from .serializers import ListPlayerSerializer, CustomPlayerSerializer
 from Back import settings
 import logging
 
 
-# class DisplayPlayerView(APIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def get(self, request):
-#             user = request.user
-#             serializer = DisplayPlayerSerializer(user)
-#             return(CustomResponse.success(
-#                 serializer.data,
-#                 status_code=200
-#             ))
             
 class DisplayPlayerView(APIView):
     permission_classes = [IsAuthenticated]
@@ -31,3 +21,14 @@ class DisplayPlayerView(APIView):
                 serializer.data,
                 status_code=200
             ))
+            
+class ListPlayerView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        player = Player.objects.all()
+        serializer = ListPlayerSerializer(player, many=True)
+        return(CustomResponse.success(
+            serializer.data,
+            status_code=200
+        ))

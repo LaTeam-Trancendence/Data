@@ -23,10 +23,18 @@ class DisplayPlayerSerializer(serializers.ModelSerializer):
         
         
 class CustomPlayerSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')  # Récupère le champ username depuis CustomUser
+    username = serializers.CharField(source='user.username')
     password = serializers.CharField(source='user.password')
     image = serializers.ImageField(source='user.image')
     class Meta:
         model = Player
         fields = ['id', 'username', 'password', 'image', 'friends',
                   'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
+
+class ListPlayerSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    
+    class Meta:
+        model = Player
+        fields = ['username']
+        
