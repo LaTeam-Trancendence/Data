@@ -61,3 +61,14 @@ class DeleteSerializer(serializers.Serializer):
             raise serializers.ValidationError("L'ID doit être positif.")
         return value
 
+class PlayerImageUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["image"] #inclu uniquement le champ image
+
+''''
+    def update(self, instance, validated_data):
+        instance.image = validated_data.get("image", instance.image)
+        instance.save()
+        return instance
+'''

@@ -7,6 +7,11 @@ from register.utils import CustomResponse
 from register.serializers import UserSerializer , LoginSerializer, DeleteSerializer
 from Back import settings
 import logging
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from .serializers import PlayerImageUploadSerializer
+from PIL import Image
+from rest_framework.response import Response
 
 
 # \\_________________register___________________________________//
@@ -14,27 +19,96 @@ import logging
 logger = logging.getLogger(__name__)
 
 class RegisterUserView(APIView):
-    permission_classes = [AllowAny] 
+    """
+    Combine user registration and image upload functionalities.
+    """
+    parser_classes = [FormParser, MultiPartParser]
     
-    def get(self, request, *args, **kwargs):    #test request Get
-         return CustomResponse.success({
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        elif self.request.method == 'POST':
+            if 'image' in self.request.data:
+                return [IsAuthenticated()]
+            return [AllowAny()]
+        return super().get_permissions()
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests for user registration instructions.
+        """
+        return CustomResponse.success({
             "status": "success",
-            "message": "Veuillez envoyer une requête POST pour vous inscrire.",
+            "message": "Veuillez envoyer une requête POST pour vous inscrire ou mettre à jour une image.",
         }, status_code=200)
-    
+
     def post(self, request, *args, **kwargs):
-        data=request.data
+        """
+        Handle POST requests for both user registration and image upload.
+        """
+        logger.info("Handling POST request in RegisterUserView.")
+        logger.debug(f"Request data: {request.data}")
+        logger.debug(f"Request files: {request.FILES}")
+
+        if 'image' in request.FILES:
+            # Handle image upload
+            return self.handle_image_upload(request)
+        else:
+            # Handle user registration
+            return self.handle_user_registration(request)
+
+
+    def handle_user_registration(self, request):
+        """
+        Process user registration.
+        """
+        logger.info("Starting user registration process.")
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            return(CustomResponse.success(
-                {"CustomUser": "create"},
+            logger.info(f"User {user.username} created successfully.")
+
+            # Check if an image is included in the request
+            if 'image' in request.FILES:
+                logger.debug("Handling image upload during user registration.")
+                image_serializer = PlayerImageUploadSerializer(instance=user, data=request.data, partial=True)
+                if image_serializer.is_valid():
+                    image_serializer.save()
+                    logger.info(f"Image uploaded successfully for user {user.username}.")
+                else:
+                    logger.warning(f"Image upload failed: {image_serializer.errors}")
+
+            return CustomResponse.success(
+                {"CustomUser": "created"},
                 status_code=201
-            ))
-        return(CustomResponse.error(
+            )
+        logger.warning(f"User registration failed: {serializer.errors}")
+        return CustomResponse.error(
             {"errors": serializer.errors},
             status_code=400
-        ))
+        )
+        
+    def handle_image_upload(self, request):
+        """
+        Process image upload for authenticated users.
+        """
+        logger.info("Handling image upload for authenticated user.")
+        user = request.user
+        serializer = PlayerImageUploadSerializer(instance=user, data=request.data)
+        if serializer.is_valid():
+            logger.debug("Serializer is valid. Saving image...")
+            serializer.save()
+            logger.info(f"Image uploaded successfully for user {user.username}.")
+            return CustomResponse.success(
+                {"message": "Image uploaded successfully.", "data": serializer.data},
+                status_code=200
+            )
+        logger.warning(f"Image upload failed: {serializer.errors}")
+        return CustomResponse.error(
+            {"errors": serializer.errors},
+            status_code=400
+        )
+
 
 # \\ ___________________login___________________________________//
 
@@ -127,8 +201,20 @@ class HealthCheckView(APIView):
             status_code=200
         ))
             
-            
-            
+''''
+class   changeImageAPIView(APIView):
+    permission_classes =[IsAuthenticated,]
+    parser_classes = [FormParser, MultiPartParser,]
+
+    def post(self, request, format=None):
+        user = request.user
+        serializer = PlayerImageUploadSerializer(instance=user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=200)
+        else:
+            return Response(data=serializer.errors, status=500)    
+ '''           
 # class DeleteAccountView(APIView):
     
 #     def delete(self, request, *args, **kwargs):
