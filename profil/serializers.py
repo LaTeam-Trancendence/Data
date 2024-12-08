@@ -50,3 +50,14 @@ class ListPlayerSerializer(serializers.ModelSerializer):
         model = Player
         fields = ['username', 'friends', 'status', 'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
         
+        
+# class PlayerImageUploadSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomUser
+#         fields = ['image'] #inclu uniquement le champ image
+
+
+#     def update(self, instance, validated_data):
+#         instance.image = validated_data.get("image", instance.image)
+#         instance.save()
+#         return instance
