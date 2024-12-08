@@ -49,7 +49,11 @@ class RegisterUserView(APIView):
         logger.info("Handling POST request in RegisterUserView.")
         logger.debug(f"Request data: {request.data}")
         logger.debug(f"Request files: {request.FILES}")
-
+        serializer = PlayerImageUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=404)
         if 'image' in request.FILES:
             # Handle image upload
             return self.handle_image_upload(request)
