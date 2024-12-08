@@ -28,13 +28,13 @@ class DisplayPlayerView(APIView):
         status = request.data.get('status')
 
         if status:
-            player.user.status = status
-            player.user.save()
+            player.status = status
+            player.save()
             return CustomResponse.success(
                 {"status": "updated"}, status_code=200)
-        else:
-            return CustomResponse.error(
-                {"No status provided"}, status_code=400)
+        # else:
+        #     return CustomResponse.error(
+        #         {"No status provided"}, status_code=400)
 
   
 # \\___________gestion friends______________//

@@ -36,7 +36,7 @@ class CustomPlayerSerializer(serializers.ModelSerializer):
     password = serializers.CharField(source='user.password')
     image = serializers.ImageField(source='user.image')
     friends = FriendSerializer(many=True)
-    status = serializers.CharField()
+    # status = serializers.CharField()
     
     class Meta:
         model = Player
