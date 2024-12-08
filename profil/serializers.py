@@ -7,6 +7,15 @@ from django.contrib.auth.password_validation import validate_password
 from Back import settings
 from player.serializers import PlayerSerializer
 
+
+class FriendSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    
+    class Meta:
+        model = Player
+        fields = ['username', 'status']
+        
+        
 class DisplayPlayerSerializer(serializers.ModelSerializer):
     player = serializers.SerializerMethodField()
 
@@ -23,10 +32,21 @@ class DisplayPlayerSerializer(serializers.ModelSerializer):
         
         
 class CustomPlayerSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')  # Récupère le champ username depuis CustomUser
+    username = serializers.CharField(source='user.username')
     password = serializers.CharField(source='user.password')
     image = serializers.ImageField(source='user.image')
+    friends = FriendSerializer(many=True)
+    # status = serializers.CharField()
+    
     class Meta:
         model = Player
-        fields = ['id', 'username', 'password', 'image', 'friends',
+        fields = ['id', 'username', 'password', 'image', 'friends', 'status',
                   'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
+
+class ListPlayerSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    
+    class Meta:
+        model = Player
+        fields = ['username', 'friends', 'status', 'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
+        

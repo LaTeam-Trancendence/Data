@@ -12,7 +12,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ['id', 'user', 'friends', 'language', 'win_pong', 'lose_pong',
+        fields = ['id', 'user', 'friends', 'status', 'win_pong', 'lose_pong',
                   'win_tictactoe', 'lose_tictactoe']
 
     def create(self, validated_data):
@@ -21,9 +21,21 @@ class PlayerSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"user": "Un utilisateur doit être spécifié."})
         return super().create(validated_data)
 
-    #protection contre les injection sql
+    # protection contre les injection sql
     # Vérifie le type MIME permet d'identifier la nature et le format de docs
     # Vérifie la taille du fichier (max 5MB)
+
+class PlayerImageUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['image'] #inclu uniquement le champ image
+
+
+    def update(self, instance, validated_data):
+        instance.image = validated_data.get("image", instance.image)
+        instance.save()
+        return instance
+    
     ''''
     def validate_profile_picture(self, value):
 

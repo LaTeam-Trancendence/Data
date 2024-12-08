@@ -92,7 +92,21 @@ class statsPlayerView(APIView):
 class   signupAPIView(APIView):
     serializer_class = PlayerSerializer
     permission_classes = [AllowAny]
-'''
+    
+# \\________________verfier les reponses___________//
+
+class   changeImageAPIView(APIView):
+    permission_classes =[IsAuthenticated,]
+    parser_classes = [FormParser, MultiPartParser,]
+
+    def post(self, request, format=None):
+        user = request.user
+        serializer = PlayerImageUploadSerializer(instance=user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=200)
+        else:
+            return Response(data=serializer.errors, status=500)
 ''''
 class UploadPlayerImageView(APIView):
     permission_classes = [IsAuthenticated]

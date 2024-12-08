@@ -3,7 +3,7 @@ from tables_core.models import CustomUser, Player
 
 
 class FriendSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source=Player.user)
+    username = serializers.CharField(source='user.username')
     
     class Meta:
         model = Player
