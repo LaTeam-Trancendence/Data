@@ -85,8 +85,8 @@ MIDDLEWARE = [
 ]
 
 #repertoire des fichiers media
-MEDIA_URL = '/media/'
 #chemin absolue pour stocke les fichiers telecharge
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CORS_ALLOW_ALL_ORIGINS = True
