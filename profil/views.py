@@ -22,7 +22,21 @@ class DisplayPlayerView(APIView):
                 serializer.data,
                 status_code=200
             ))
-        
+            
+    def put(self, request):
+        player = Player.objects.get(user=request.user)
+        status = request.data.get('status')
+
+        if status:
+            player.user.status = status
+            player.user.save()
+            return CustomResponse.success(
+                {"status": "updated"}, status_code=200)
+        else:
+            return CustomResponse.error(
+                {"No status provided"}, status_code=400)
+
+  
 # \\___________gestion friends______________//
         
 class AddFriendsView(APIView):
@@ -51,21 +65,8 @@ class AddFriendsView(APIView):
                 "error": "joueur non trouvé"}, status_code=404)
 
 
-# class   FriendListView(APIView):
-    
-#     permission_classes = [IsAuthenticated]
-    
-#     def get(self, request):
-#         player = Player.objects.get(user=request.user)
-#         friends = player.friends.all()
-#         serializer = FriendSerializer(friends, many=True)
-#         return CustomResponse.success({
-#                 "Friends list": "succes.",
-#             }, status=200)
-
-
-
 # \\______________listPlayer____________//
+
         
 class ListPlayerView(APIView):
     permission_classes = [IsAuthenticated]
@@ -77,3 +78,15 @@ class ListPlayerView(APIView):
             serializer.data,
             status_code=200
         ))
+        
+# class   FriendListView(APIView):
+    
+#     permission_classes = [IsAuthenticated]
+    
+#     def get(self, request):
+#         player = Player.objects.get(user=request.user)
+#         friends = player.friends.all()
+#         serializer = FriendSerializer(friends, many=True)
+#         return CustomResponse.success({
+#                 "Friends list": "succes.",
+#  

@@ -14,7 +14,7 @@ import os
 # Reste a gerer les amis en intergrant une liste
 
 class CustomUser(AbstractUser):
-    image = models.ImageField(upload_to='media/player_picture/', blank=True, null=True)
+    image = models.ImageField(upload_to='player_picture/', blank=True, null=True)
     
     def save(self, *args, **kwargs):
         # Supprimer l'ancienne image si elle existe et si elle diffère de la nouvelle
@@ -59,7 +59,7 @@ class Player(models.Model):
     
     language = models.CharField(max_length=2, default="FR")
 
-    status = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, blank=True)
     
     win_pong = models.IntegerField(default=0)
     lose_pong = models.IntegerField(default=0)

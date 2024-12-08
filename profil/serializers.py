@@ -36,10 +36,11 @@ class CustomPlayerSerializer(serializers.ModelSerializer):
     password = serializers.CharField(source='user.password')
     image = serializers.ImageField(source='user.image')
     friends = FriendSerializer(many=True)
+    status = serializers.CharField()
     
     class Meta:
         model = Player
-        fields = ['id', 'username', 'password', 'image', 'friends',
+        fields = ['id', 'username', 'password', 'image', 'friends', 'status',
                   'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
 
 class ListPlayerSerializer(serializers.ModelSerializer):
@@ -47,5 +48,5 @@ class ListPlayerSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Player
-        fields = ['username', 'friends', 'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
+        fields = ['username', 'friends', 'status', 'win_pong', 'lose_pong', 'win_tictactoe', 'lose_tictactoe']
         
