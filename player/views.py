@@ -107,6 +107,7 @@ class   changeImageAPIView(APIView):
             return Response(data=serializer.data, status=200)
         else:
             return Response(data=serializer.errors, status=500)
+'''
 ''''
 class UploadPlayerImageView(APIView):
     permission_classes = [IsAuthenticated]

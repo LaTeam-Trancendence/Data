@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'password', 'image']
-        # extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {'password': {'write_only': True}}
 
 
     def validate_password(self, value):
@@ -64,8 +64,7 @@ class DeleteSerializer(serializers.Serializer):
 class PlayerImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["image"] #inclu uniquement le champ image
-
+        fields = ["image"] 
 ''''
     def update(self, instance, validated_data):
         instance.image = validated_data.get("image", instance.image)
