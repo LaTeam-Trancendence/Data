@@ -17,6 +17,8 @@ class DisplayPlayerView(APIView):
 
     def get(self, request):
             player = Player.objects.get(user=request.user)
+            # print(player.user.image)
+            # print(player.user.username)
             serializer = CustomPlayerSerializer(player)
             return(CustomResponse.success(
                 serializer.data,
@@ -79,14 +81,17 @@ class ListPlayerView(APIView):
             status_code=200
         ))
         
-# class   FriendListView(APIView):
+class MatchResultView(APIView):
+    permission_classes = [IsAuthenticated]
     
-#     permission_classes = [IsAuthenticated]
-    
-#     def get(self, request):
-#         player = Player.objects.get(user=request.user)
-#         friends = player.friends.all()
-#         serializer = FriendSerializer(friends, many=True)
-#         return CustomResponse.success({
-#                 "Friends list": "succes.",
-#  
+    def post(self, request):
+        player = Player.objects.get(user=request.user)
+        result = request.data.get('result')
+        
+        if result == 'win_pong':
+            player.win_pong += 1
+        elif result == 'lose_pong':
+            player.lose_pong += 1
+        player.save()
+        return CustomResponse.success(
+                {"match": "updated"}, status_code=200)

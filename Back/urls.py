@@ -30,7 +30,7 @@ urlpatterns = [
     path('api/', include('friends.urls')),
     path('api/', include('stats.urls')),
     # path('prometheus-xyzabc/', include('django_prometheus.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #ca gere les urls pattern MEDIA et gere les requetes
 
