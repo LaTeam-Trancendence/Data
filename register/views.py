@@ -16,11 +16,11 @@ logger = logging.getLogger(__name__)
 class RegisterUserView(APIView):
     permission_classes = [AllowAny] 
     
-    def get(self, request, *args, **kwargs):    #test request Get
-         return CustomResponse.success({
-            "status": "success",
-            "message": "Veuillez envoyer une requête POST pour vous inscrire.",
-        }, status_code=200)
+    # def get(self, request, *args, **kwargs):    #test request Get
+    #      return CustomResponse.success({
+    #         "status": "success",
+    #         "message": "Veuillez envoyer une requête POST pour vous inscrire.",
+    #     }, status_code=200)
     
     def post(self, request, *args, **kwargs):
         data=request.data
@@ -32,7 +32,7 @@ class RegisterUserView(APIView):
                 status_code=201
             ))
         return(CustomResponse.error(
-            {"errors": serializer.errors},
+            {"error": serializer.errors},
             status_code=400
         ))
 
@@ -59,12 +59,12 @@ class LoginView(APIView):
             ))
             else:
                 return(CustomResponse.error(
-                {"errors": "champ vide"},
+                {"error": "champ vide"},
                 status_code=400
         ))
         else:
             return(CustomResponse.error(
-                {"errors": "le pseudo ou le mdp n'est pas valide"},
+                {"error": "le pseudo ou le mdp n'est pas valide"},
                 status_code=401
         ))
             

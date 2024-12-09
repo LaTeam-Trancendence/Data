@@ -108,8 +108,9 @@ class AddFriendsView(APIView):
 				))
 
 		except Player.DoesNotExist:
-			return CustomResponse.error({
-				"error": "joueur non trouvé"}, status_code=404)
+			return CustomResponse.error(
+       			{"error": "joueur non trouvé"},
+          		status_code=404)
 
 
 # \\______________listPlayer____________//
