@@ -1,9 +1,18 @@
 Liste erreur
+
 register:
-
-username = 'ce pseudo existe déjà'
-password = 'mdp: minimum 8 caractères avec au moins "!@#$%^&*()" et ne doit pas être trop commun(ex: 123...)'
-
+	"Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&*())."
+	"mdp trop proche du pseudo"
+	"mdp trop court: minimud 8 caracteres"
+	"mdp trop commum ex: "abcd""
+	"mdp doit contenir au moins 1 lettre "
+	
 login:
+	"errors": "le pseudo ou le mdp n'est pas valide"
+logout:
+	"error": "Aucune session active."
 
-
+profil:
+	"error": "saisie non valide"
+	"error": "joueur non trouvé"
+	

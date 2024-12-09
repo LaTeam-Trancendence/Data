@@ -19,8 +19,14 @@ class statsPlayerView(APIView):
         serializer = PlayerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+            return(CustomResponse.success(
+                {"stats": "ok"},
+                status_code=201
+            ))
+        return(CustomResponse.error(
+            {"errors": serializer.errors},
+            status_code=400
+        ))
 
     # \\_______recupere les stats____________//
 
@@ -32,28 +38,28 @@ class statsPlayerView(APIView):
             try:
                 player = Player.objects.get(id=player_id)
                 serializer = PlayerSerializer(player)
-                return CustomResponse.success(
-                    data={"player": serializer.data},
-                    message="Statistiques joueur ok",
-                    status_code=200
-                )
+                return(CustomResponse.success(
+                {"stats joueurs": "ok"},
+                status_code=201
+            ))
             except Player.DoesNotExist:
-                return CustomResponse.error(
-                    errors={"player_id": "Joueur non trouvé."},
-                    message="Erreur : le joueur n'existe pas.",
-                    status_code=404)
+                return(CustomResponse.error(
+                {"errors": "joueur non trouve"},
+                status_code=404
+            ))
 
         else:
             #players = Player.objects.filter(status=True)
             players = Player.objects.all()
             serializer = PlayerSerializer(players, many=True)
-            return CustomResponse.success(
-                data={"players": serializer.data},
-                message="Statistiques tous les joueurs ok",
+            return(CustomResponse.success(
+                {"stats joueurs": "stats de tous les joueurs ok"},
                 status_code=200
-            )
+            ))
 
     # \\_______________modifie les stats____________//
+
+# attention au customResponse
 
     def put(self, request, *args, **kwargs):
 
