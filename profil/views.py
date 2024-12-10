@@ -1,9 +1,10 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from tables_core.models import CustomUser, Player, Match
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.shortcuts import render
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from tables_core.models import CustomUser, Player, Match
+from django.core.files.storage import FileSystemStorage
 from register.utils import CustomResponse
 from .serializers import ListPlayerSerializer, CustomPlayerSerializer, FriendSerializer
 from Back import settings
@@ -17,8 +18,8 @@ class DisplayPlayerView(APIView):
 
 	def get(self, request):
 			player = Player.objects.get(user=request.user)
-			# print(player.user.image)
-			# print(player.user.username)
+			print(player.user.image)
+			print(player.user.username)
 			serializer = CustomPlayerSerializer(player)
 			return(CustomResponse.success(
 				serializer.data,
@@ -64,6 +65,31 @@ class DisplayPlayerView(APIView):
 			return CustomResponse.success(
 				{"passowrd": "updated"},
 				status_code=200)
+		
+		# //________image_________\\
+
+
+		image = request.FILES.get('img')
+
+		print(image)
+		if image:
+
+			fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+			filename = fs.save('player_picture/' + image.name, image)
+			file_url = fs.url(filename)
+	
+			player.user.image = file_url
+			player.user.save()
+
+		# image = request.data.get('image')
+
+		# if image:
+		# 	player.user.image = image
+		# 	print(image)
+		# 	player.user.save()
+		# 	return CustomResponse.success(
+		# 		{"image": "updated"},
+		# 		status_code=200)
 			
 			
 		return CustomResponse.error(
