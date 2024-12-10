@@ -56,6 +56,7 @@ class PlayerImageUploadSerializer(serializers.ModelSerializer):
 
         return value
 
+        '''
 # class DisplayPlayerSerializer(serializers.ModelSerializer):
 #     player = serializers.SerializerMethodField()
 
@@ -69,4 +70,4 @@ class PlayerImageUploadSerializer(serializers.ModelSerializer):
 #             return PlayerSerializer(player).data
 #         except Player.DoesNotExist:
 #             return None
-'''
+
