@@ -28,8 +28,8 @@ class CustomUser(AbstractUser):
         super().save(*args, **kwargs)  # Sauvegarde initiale pour accéder au fichier
         if self.image:
             img = Image.open(self.image.path)  # Chemin local du fichier
-            if img.height > 400 or img.width > 400:
-                output_size = (400, 400)
+            if img.height > 600 or img.width > 600:
+                output_size = (600, 600)
                 img = img.resize(output_size, Image.Resampling.LANCZOS) #constante pour une qualite d image redimentionner elevee
                 img.save(self.image.path)
                 

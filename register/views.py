@@ -11,6 +11,7 @@ import logging
 
 # \\_________________register___________________________________//
 
+
 logger = logging.getLogger(__name__)
 
 class RegisterUserView(APIView):
@@ -25,7 +26,7 @@ class RegisterUserView(APIView):
     def post(self, request, *args, **kwargs):
         data=request.data
         serializer = UserSerializer(data=request.data)
-        # print(data)
+        print(data)
         if serializer.is_valid():
             user = serializer.save()
             return(CustomResponse.success(
@@ -36,6 +37,7 @@ class RegisterUserView(APIView):
             {"error": serializer.errors},
             status_code=400
         ))
+    
 
 # \\ ___________________login___________________________________//
 
