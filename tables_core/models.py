@@ -62,11 +62,11 @@ class Player(models.Model):
 
     status = models.CharField(max_length=20, blank=True)
     
-    win_pong = models.IntegerField(default=0)
-    lose_pong = models.IntegerField(default=0)
+    win_pong = models.PositiveIntegerField(default=0)
+    lose_pong = models.PositiveIntegerField(default=0)
     
-    win_tictactoe = models.IntegerField(default=0)
-    lose_tictactoe = models.IntegerField(default=0)
+    win_tictactoe = models.PositiveIntegerField(default=0)
+    lose_tictactoe = models.PositiveIntegerField(default=0)
       
     def __str__(self):
         return self.user.username
@@ -80,9 +80,9 @@ class Match(models.Model):
     adv = models.ForeignKey(Player, on_delete=models.SET_NULL, 
                         null=True, related_name='adv_matches')
     
-    user_score = models.IntegerField(default=0)
-    adv_score = models.IntegerField(default=0)
-    result = models.IntegerField(default=0)
+    user_score = models.PositiveIntegerField(default=0)
+    adv_score = models.PositiveIntegerField(default=0)
+    result = models.PositiveIntegerField(default=0)
     
     date = models.DateTimeField(null=True)
     start_match = models.DateTimeField(null=True)

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from tables_core.models import CustomUser, Player, Match
 from django.contrib.auth.models import User
 from register.utils import CustomResponse
-from player.serializers import PlayerSerializer
+from player.serializers import PlayerSerializer, PlayerStatSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -94,6 +94,46 @@ class statsPlayerView(APIView):
             message="Erreur lors de la mise à jour des statistiques.",
             status_code=400
         )
+
+# mise a jour des statistiques
+class   PlayerStatAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, pk, stat_type): #pk cle primaire = id et stat_type = "victoire pong" ou "defaite"
+        try:
+            player = Player.objects.get(pk=pk)
+            if stat_type == "victory_pong":
+                player.win_pong += 1
+            elif stat_type == "defeat_pong":
+                player.lose_pong += 1
+            elif stat_type == "victory_tictactoe":
+                player.win_tictactoe += 1
+            elif stat_type == "defeat_tictactoe":
+                player.lose_tictactoe += 1
+            else:
+                return CustomResponse.error(
+                    errors={"error": "Invalid stat type"},
+                    status_code=400)
+            
+            player.save()
+            return CustomResponse.success(
+                {"message": f"{stat_type} stat updated",
+                 "player": player.user},
+                status_code=200)
+        except Player.DoesNotExist:
+            return CustomResponse.error({"error": "Player not found"},
+                            status_code=404)
+
+class PlayerDetailAPIView(APIView):
+    def get(self, request, pk):
+        try:
+            player = Player.objects.get(pk=pk)
+            serializer = PlayerStatSerializer(player)
+            return CustomResponse.success(serializer.data, status_code=200)
+        except Player.DoesNotExist:
+            return CustomResponse.error({"error": "Player not found"},
+                                  status_code=404)
+                
 ''''
 class   signupAPIView(APIView):
     serializer_class = PlayerSerializer

@@ -35,7 +35,12 @@ class PlayerImageUploadSerializer(serializers.ModelSerializer):
         instance.image = validated_data.get("image", instance.image)
         instance.save()
         return instance
-    
+
+class PlayerStatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        fields = ["id", "user", "win_pong", "lose_pong", "win_tictactoe", "lose_tictactoe"]
+
     ''''
     def validate_profile_picture(self, value):
 
