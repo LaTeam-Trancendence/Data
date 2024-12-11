@@ -13,6 +13,8 @@ import os
 # \\_______________register______________________________//
 
 class UserSerializer(serializers.ModelSerializer):
+   
+
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'password', 'image']
@@ -27,14 +29,27 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(e.messages)
         return value
     
+    # def get_image_url(self, obj):
+    #     # Retourne l'URL complète de l'image si elle existe, sinon retourne None
+    #     return obj.image.url if obj.image else None
+    
     def create(self, validated_data):
+        username = validated_data['username']
         image = validated_data.pop('image', None)
         
+
         # Sauvegarder le fichier image si présent
         if image:
+            ext = os.path.splitext(image.name)[1]
+
+            valid_extensions = ['.png']
+            if ext not in valid_extensions:
+                ext == ['.png'],
+            image_name = f"{username}{'.png'}"
+        
             fs = FileSystemStorage(location=os.path.join(str(settings.MEDIA_ROOT), 'player_picture'))
-            filename = fs.save(image.name, image)
-            validated_data['image'] = 'player_picture/' + filename
+            filename = fs.save(image_name, image)
+            validated_data['image'] = f"player_picture/{filename}"
 
         # Créer l'utilisateur avec les données validées
         user = CustomUser.objects.create_user(
@@ -43,6 +58,10 @@ class UserSerializer(serializers.ModelSerializer):
             image=validated_data.get('image')
         )
         
+        return user
+    
+
+
     # def create(self, validated_data):
     #     print(validated_data)
     #     image=validated_data.pop('image', None),
@@ -62,7 +81,6 @@ class UserSerializer(serializers.ModelSerializer):
     #             user.image = fs.url(filename)
     #             user.save()
         # player = Player.objects.create_user()
-        return user
 
     
 # \\__________________login_______________________________//
