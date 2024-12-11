@@ -99,9 +99,9 @@ class statsPlayerView(APIView):
 class   PlayerStatAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def post(self, request, pk, stat_type): #pk cle primaire = id et stat_type = "victoire pong" ou "defaite"
+    def post(self, request, stat_type): # stat_type = "victoire pong" ou "defaite"
         try:
-            player = Player.objects.get(pk=pk)
+            player = Player.objects.get(user=request.user)
             if stat_type == "victory_pong":
                 player.win_pong += 1
             elif stat_type == "defeat_pong":
@@ -125,9 +125,9 @@ class   PlayerStatAPIView(APIView):
                             status_code=404)
 
 class PlayerDetailAPIView(APIView):
-    def get(self, request, pk):
+    def get(self, request):
         try:
-            player = Player.objects.get(pk=pk)
+            player = Player.objects.get(user=request.user)
             serializer = PlayerStatSerializer(player)
             return CustomResponse.success(serializer.data, status_code=200)
         except Player.DoesNotExist:
