@@ -131,6 +131,8 @@ class   PlayerStatAPIView(APIView):
                             status_code=404)
 
 class PlayerDetailAPIView(APIView):
+    permission_classes = [AllowAny]
+    
     def get(self, request):
         try:
             player = Player.objects.get(user=request.user)

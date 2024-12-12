@@ -28,7 +28,6 @@ class AddFriendsView(APIView):
 
 #pour recuperer la liste d amis d'un joueur connecte
 class   FriendListView(APIView):
-    
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
