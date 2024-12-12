@@ -41,6 +41,11 @@ class PlayerStatSerializer(serializers.ModelSerializer):
         model = Player
         fields = ["id", "user", "win_pong", "lose_pong", "win_tictactoe", "lose_tictactoe"]
 
+
+class StatUpdateSerializer(serializers.Serializer):
+    stat_type = serializers.ChoiceField(
+        choices=["win_pong", "lose_pong", "win_tictactoe", "lose_tictactoe"]
+    )
     ''''
     def validate_profile_picture(self, value):
 

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from tables_core.models import CustomUser, Player, Match
 from django.contrib.auth.models import User
 from register.utils import CustomResponse
-from player.serializers import PlayerSerializer, PlayerStatSerializer
+from player.serializers import PlayerSerializer, PlayerStatSerializer, StatUpdateSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -99,16 +99,23 @@ class statsPlayerView(APIView):
 class   PlayerStatAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def post(self, request, stat_type): # stat_type = "victoire pong" ou "defaite"
+    def post(self, request): # stat_type = "victoire pong" ou "defaite"
         try:
+            serializer = StatUpdateSerializer(data=request.data)
+            if not serializer.is_valid():
+                return CustomResponse.error(
+                errors=serializer.errors, 
+                status_code=400
+            )
             player = Player.objects.get(user=request.user)
-            if stat_type == "victory_pong":
+            stat_type = serializer.validated_data["stat_type"]
+            if stat_type == "win_pong":
                 player.win_pong += 1
-            elif stat_type == "defeat_pong":
+            elif stat_type == "lose_pong":
                 player.lose_pong += 1
-            elif stat_type == "victory_tictactoe":
+            elif stat_type == "win_tictactoe":
                 player.win_tictactoe += 1
-            elif stat_type == "defeat_tictactoe":
+            elif stat_type == "lose_tictactoe":
                 player.lose_tictactoe += 1
             else:
                 return CustomResponse.error(
@@ -117,8 +124,7 @@ class   PlayerStatAPIView(APIView):
             
             player.save()
             return CustomResponse.success(
-                {"message": f"{stat_type} stat updated",
-                 "player": player.user},
+                {"message": "stat updated"},
                 status_code=200)
         except Player.DoesNotExist:
             return CustomResponse.error({"error": "Player not found"},
