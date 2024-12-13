@@ -93,9 +93,10 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
     "http://localhost:5173",
     "https://localhost:5173",
-    "https://localhost:8000",
+    "http://localhost:8000",
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -106,10 +107,12 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
+    "http://localhost:8080",
     "http://localhost:5173",  # Ajouter votre frontend ici
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8080",
     "http://localhost:5173",  # Ajoutez l'origine de votre frontend
 ]
 
