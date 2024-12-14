@@ -7,6 +7,7 @@ from register.utils import CustomResponse
 from register.serializers import UserSerializer , LoginSerializer, DeleteSerializer
 from Back import settings
 import logging
+import os
 
 
 # \\_________________register___________________________________//
@@ -103,6 +104,7 @@ class DeleteAccountView(APIView):
     def post(self, request):
         user = request.user
         
+        
         if user:
             anoCustomUser(user),         
             return CustomResponse.success(
@@ -114,6 +116,13 @@ class DeleteAccountView(APIView):
         ))
         
 def anoCustomUser(user):
+
+
+    if user.image:
+        image_path = os.path.join(settings.MEDIA_ROOT, user.image.name)
+
+    if os.path.isfile(image_path):
+            os.remove(image_path)
     
     user.username = f"user_{user.id}"
     user.image = None 

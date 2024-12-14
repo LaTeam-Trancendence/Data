@@ -3,9 +3,12 @@ Liste erreur
 register:
 	"Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&*())."
 	"mdp trop proche du pseudo"
-	"mdp trop court: minimud 8 caracteres"
+	"mdp trop court: minimum 8 caracteres"
 	"mdp trop commum ex: "abcd""
 	"mdp doit contenir au moins 1 lettre "
+	Le mot de passe doit avoir 8 caracteres min
+		- dont au moins 1 lettre et 1 caratere special
+		- ne pas etre trop proche du pseudo ni trop commun
 	
 login:
 	"errors": "le pseudo ou le mdp n'est pas valide"
@@ -16,3 +19,4 @@ profil:
 	"error": "saisie non valide"
 	"error": "joueur non trouvé"
 	
+creer une div appen le text et div htlm = contenu
