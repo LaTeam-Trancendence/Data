@@ -50,8 +50,17 @@ class UserSerializer(serializers.ModelSerializer):
             fs = FileSystemStorage(location=os.path.join(str(settings.MEDIA_ROOT), 'player_picture'))
             filename = fs.save(image_name, image)
             validated_data['image'] = f"player_picture/{filename}"
+        else:
+   
+            default_image_path = os.path.join(settings.MEDIA_ROOT, 'player_picture', 'default_avatar.png')
+            image_name = f"{username}.png"
+            
+            with open(default_image_path, 'rb') as default_image:
+                with open(os.path.join(settings.MEDIA_ROOT, 'player_picture', image_name), 'wb') as new_image:
+                    new_image.write(default_image.read())
+            
+            validated_data['image'] = f"player_picture/{image_name}"
 
-        # Créer l'utilisateur avec les données validées
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
             password=validated_data['password'],
