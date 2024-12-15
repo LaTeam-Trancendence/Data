@@ -86,7 +86,8 @@ MIDDLEWARE = [
 
 #repertoire des fichiers media
 #chemin absolue pour stocke les fichiers telecharge
-MEDIA_ROOT = BASE_DIR / 'Backend_API' / 'media'
+
+MEDIA_ROOT = BASE_DIR / 'media'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
