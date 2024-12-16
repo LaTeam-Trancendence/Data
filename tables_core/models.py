@@ -15,7 +15,7 @@ import os
 
 class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='player_picture/', blank=True, null=True)
-    
+    is_anonymized = models.BooleanField(default=False)
     ''''
         # Supprimer l'ancienne image si elle existe et si elle diffère de la nouvelle
         if self.pk:
@@ -60,7 +60,7 @@ class Player(models.Model):
     
     language = models.CharField(max_length=2, default="FR")
 
-    status = models.CharField(max_length=20, blank=True)
+    status = models.CharField(max_length=20, default="offline", blank=True)
     
     win_pong = models.PositiveIntegerField(default=0)
     lose_pong = models.PositiveIntegerField(default=0)

@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'stats',
     'tables_core',
 	'friends',
+    'Back',
 	# 'django_prometheus',
 ]
 
@@ -81,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'Back.middleware.UpdateLastAccessMiddleware',
 	# 'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
@@ -90,6 +92,8 @@ MIDDLEWARE = [
 MEDIA_ROOT = BASE_DIR / 'media'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+LOGGING_DIR = BASE_DIR / 'logs'
+
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
