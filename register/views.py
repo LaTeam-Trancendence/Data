@@ -125,7 +125,7 @@ def anoCustomUser(user):
             os.remove(image_path)
     
     user.username = f"user_{user.id}"
-    user.image = None 
+    user.image = 'player_picture/default_avatar.png'
     user.is_anonymized = True
     user.save()
     
